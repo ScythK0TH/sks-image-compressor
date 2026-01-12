@@ -1,47 +1,62 @@
 # SKS Image Compressor
 
-Full-stack image compression and conversion tool built with:
-- **Frontend:** Vite + React + TypeScript + Tailwind CSS
-- **Backend:** Node.js + Express + Sharp
+Full-stack image compression and conversion tool built with **Next.js**, **TypeScript**, and **Tailwind CSS**.
 
 ## Features
-- Drag-and-drop or browse to upload images.
-- Target file size and quality controls (binary-search on quality where supported).
-- Resize with custom dimensions and optional aspect-ratio lock.
-- Format conversion across JPEG, PNG, WebP, GIF, AVIF, TIFF, and passthrough SVG.
-- Metadata stripping (EXIF and other fields).
-- Preset profiles (size saver, quality focus, balanced, thumbnail, web optimized, archive) and easy extensibility.
+- Drag-and-drop or browse to upload images
+- Target file size and quality controls (binary-search on quality where supported)
+- Resize with custom dimensions and optional aspect-ratio lock
+- Format conversion across JPEG, PNG, WebP, GIF, AVIF, TIFF, and passthrough SVG
+- Metadata stripping (EXIF and other fields)
+- Preset profiles (size saver, quality focus, balanced, thumbnail, web optimized, archive) and easy extensibility
 
 ## Getting Started
+
 ```bash
-# 1) Backend
-cd server
+# Install dependencies
 npm install
-npm run dev        # starts on http://localhost:4000
 
-# 2) Frontend (separate terminal)
-cd ../client
-npm install
-npm run dev        # starts on http://localhost:5173
+# Run development server
+npm run dev
 ```
 
-Set `VITE_API_URL` in `client/.env` if the API is hosted elsewhere:
-```
-VITE_API_URL=http://localhost:4000
-```
+The app will be available at `http://localhost:3000`.
 
-Build commands:
+## Build for Production
+
 ```bash
-cd server && npm run build     # tsc compile
-cd client && npm run build     # tsc + vite build
+# Build the application
+npm run build
+
+# Start production server
+npm start
+```
+
+## Project Structure
+
+```
+├── app/
+│   ├── api/           # API routes
+│   │   ├── presets/   # GET /api/presets
+│   │   └── process/   # POST /api/process
+│   ├── globals.css    # Global styles
+│   ├── layout.tsx     # Root layout
+│   └── page.tsx       # Home page
+├── lib/               # Shared utilities
+│   ├── types.ts       # TypeScript types
+│   ├── imageProcessor.ts  # Image processing logic
+│   └── presets.ts     # Preset definitions
+└── package.json
 ```
 
 ## Presets
-Backend presets live in `server/src/presets.ts`. Add or tweak options there; the UI consumes them dynamically from `/api/presets`.
+
+Presets are defined in `lib/presets.ts`. Add or modify presets there; the UI consumes them dynamically from `/api/presets`.
 
 ## Notes
-- Sharp cannot encode SVG; SVG inputs are accepted but re-encoded in another selected format or passed through if kept as SVG.
-- Upload limit defaults to 25 MB; adjust in `server/src/index.ts` (multer limits).
+- Sharp cannot encode SVG; SVG inputs are accepted but re-encoded in another selected format or passed through if kept as SVG
+- Upload limit defaults to 25 MB; adjust in `next.config.ts` (bodySizeLimit)
+- All API routes are server-side and handle image processing efficiently
 
 ## License
-Copyright ScythK0TH.
+Copyright © ScythK0TH
