@@ -4,6 +4,9 @@ import { processImage } from "@/lib/imageProcessor";
 import { resolvePresetOptions } from "@/lib/presets";
 import { ProcessOptions } from "@/lib/types";
 
+export const maxDuration = 60; // 60 seconds max execution time
+export const runtime = "nodejs"; // Use Node.js runtime
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();

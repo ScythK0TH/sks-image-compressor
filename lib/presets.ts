@@ -62,6 +62,17 @@ const presets: Preset[] = [
       stripMetadata: false,
     },
   },
+  {
+    id: "format-converter",
+    name: "Format Converter",
+    description: "Convert file format only (e.g., WebP to PNG). Preserves original quality, dimensions, and metadata.",
+    options: {
+      quality: 100,
+      stripMetadata: false,
+      // No width/height - preserves original dimensions
+      // No targetSizeKB - no compression, just format conversion
+    },
+  },
 ];
 
 export const listPresets = (): Preset[] => presets;
