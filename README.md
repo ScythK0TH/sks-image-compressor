@@ -1,4 +1,4 @@
-# ImageCompressor Web App
+# SKS Image Compressor
 
 Full-stack image compression and conversion tool built with:
 - **Frontend:** Vite + React + TypeScript + Tailwind CSS
@@ -45,4 +45,3 @@ Backend presets live in `server/src/presets.ts`. Add or tweak options there; the
 
 ## License
 Copyright ScythK0TH.
-# sks-image-compressor
