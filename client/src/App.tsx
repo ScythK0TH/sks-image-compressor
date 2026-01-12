@@ -408,6 +408,10 @@ function App() {
           </div>
         </section>
       </main>
+
+      <footer className="max-w-6xl mx-auto px-6 mt-10 text-sm text-slate-500">
+        © ScythK0TH
+      </footer>
     </div>
   );
 }
