@@ -6,6 +6,15 @@ type Preset = {
   id: string;
   name: string;
   description: string;
+  options: {
+    format?: string;
+    quality?: number;
+    targetSizeKB?: number;
+    width?: number;
+    height?: number;
+    keepAspectRatio?: boolean;
+    stripMetadata?: boolean;
+  };
 };
 
 type Dimensions = { width: number; height: number };
@@ -125,6 +134,36 @@ export default function Home() {
     setOptions((prev) => ({
       ...prev,
       [key]: value,
+    }));
+  };
+
+  const handlePresetSelect = (presetId: string) => {
+    if (!presetId) {
+      // Reset to default values for Custom preset
+      setOptions({
+        presetId: "",
+        format: "webp",
+        quality: 85,
+        targetSizeKB: 500,
+        width: undefined,
+        height: undefined,
+        keepAspectRatio: true,
+        stripMetadata: true,
+      });
+      return;
+    }
+
+    const preset = presets.find((p) => p.id === presetId);
+    if (!preset) return;
+
+    // Apply preset options to UI state
+    setOptions((prev) => ({
+      ...prev,
+      presetId,
+      ...preset.options,
+      // Preserve width/height if they were manually set, unless preset specifies them
+      width: preset.options.width !== undefined ? preset.options.width : prev.width,
+      height: preset.options.height !== undefined ? preset.options.height : prev.height,
     }));
   };
 
@@ -319,7 +358,7 @@ export default function Home() {
                 {presets.map((preset) => (
                   <button
                     key={preset.id}
-                    onClick={() => handleOptionChange("presetId", preset.id)}
+                    onClick={() => handlePresetSelect(preset.id)}
                     className={`text-left px-3 py-2 rounded-lg border text-xs sm:text-sm transition-colors ${
                       options.presetId === preset.id
                         ? "border-indigo-500 bg-indigo-500/20 dark:text-white text-slate-900"
@@ -331,7 +370,7 @@ export default function Home() {
                   </button>
                 ))}
                 <button
-                  onClick={() => handleOptionChange("presetId", "")}
+                  onClick={() => handlePresetSelect("")}
                   className={`text-left px-3 py-2 rounded-lg border text-xs sm:text-sm transition-colors ${
                     options.presetId === ""
                       ? "border-emerald-500 bg-emerald-500/20 dark:text-white text-slate-900"

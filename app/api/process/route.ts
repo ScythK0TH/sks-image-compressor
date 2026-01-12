@@ -17,7 +17,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "No file uploaded" }, { status: 400 });
     }
 
-    const parsedOptions: ProcessOptions = optionsStr ? JSON.parse(optionsStr) : {};
+    // Validate file size (25MB limit)
+    const maxSize = 25 * 1024 * 1024; // 25MB
+    if (file.size > maxSize) {
+      return NextResponse.json(
+        { message: `File size exceeds limit of ${maxSize / 1024 / 1024}MB` },
+        { status: 400 }
+      );
+    }
+
+    let parsedOptions: ProcessOptions = {};
+    try {
+      parsedOptions = optionsStr ? JSON.parse(optionsStr) : {};
+    } catch (parseError) {
+      console.error("Failed to parse options", parseError);
+      return NextResponse.json({ message: "Invalid options format" }, { status: 400 });
+    }
+
     const mergedOptions = resolvePresetOptions(parsedOptions.presetId, parsedOptions);
 
     const arrayBuffer = await file.arrayBuffer();
@@ -33,7 +49,14 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Processing error", error);
-    return NextResponse.json({ message: "Failed to process image" }, { status: 500 });
+    console.error("Processing error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Failed to process image";
+    return NextResponse.json(
+      { 
+        message: "Failed to process image",
+        error: process.env.NODE_ENV === "development" ? errorMessage : undefined
+      },
+      { status: 500 }
+    );
   }
 }

@@ -54,10 +54,10 @@ const presets: Preset[] = [
   },
   {
     id: "archive",
-    name: "Archive",
-    description: "Lossless compression, keep metadata, maximum fidelity.",
+    name: "Professional Archive",
+    description: "TIFF format for long-term archival storage. Lossless quality, all metadata preserved, industry standard format.",
     options: {
-      format: "png",
+      format: "tiff",
       quality: 100,
       stripMetadata: false,
     },
